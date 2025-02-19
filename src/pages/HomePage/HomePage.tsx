@@ -24,15 +24,16 @@ export const HomePage = () => {
 
     if (!searchValue) {
       setGames(allGames);
-    } else {
-      const filteredArray = allGames.filter((game) =>
-        // @ts-ignore
-        game.teams.home.name.toLowerCase().includes(searchValue) ||
-        // @ts-ignore
-        game.teams.away.name.toLowerCase().includes(searchValue)
-      );
-      setGames(filteredArray);
     }
+
+    const filteredArray = allGames.filter((game) =>
+      // @ts-ignore
+      game.teams.home.name.toLowerCase().includes(searchValue) ||
+      // @ts-ignore
+      game.teams.away.name.toLowerCase().includes(searchValue)
+    );
+
+    setGames(filteredArray);
   };
 
   return (
