@@ -4,14 +4,15 @@ type TimeCardTemplateType = {
     short: string;
     elapsed: number;
     extra: number;
-  }
+  },
 }
+
 
 export const TimeCardTemplate = ({ time }: TimeCardTemplateType) => {
   return (
     <div className="flex">
       <span>
-        {time.elapsed}
+        {time.elapsed === 90 ? (<div>{time.elapsed}+{time.extra}</div>) : time.elapsed}
       </span>
 
       <span className="animate-pulse text-lg">
