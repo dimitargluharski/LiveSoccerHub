@@ -1,3 +1,5 @@
+import { CiStar } from "react-icons/ci";
+
 import { AwayTeamCardTemplate } from "../AwayTeamCardTemplate/AwayTeamCardTemplate";
 import { HomeTeamCardTemplate } from "../HomeTeamCardTemplate/HomeTeamCardTemplate";
 import { TimeCardTemplate } from "../TimeCardTemplate/TimeCardTemplate";
@@ -5,6 +7,7 @@ import { TimeCardTemplate } from "../TimeCardTemplate/TimeCardTemplate";
 type CardTemplateType = {
   data: {
     fixture: {
+      id: number;
       status: {
         elapsed: number;
         extra: number;
@@ -53,21 +56,27 @@ type CardTemplateType = {
     goals: {
       home: number;
       away: number;
-    }
-  }
+    },
+  },
+  handleAddGameToFavorite: (game: any) => void;
 }
 
-export const CardTemplate = ({ data }: CardTemplateType) => {
+export const CardTemplate = ({ data, handleAddGameToFavorite }: CardTemplateType) => {
   return (
     <div className="flex items-center gap-2 rounded-md p-2 hover:shadow-md shadow-sm">
       <div>
         <TimeCardTemplate time={data.fixture.status} />
       </div>
 
-      <div>
+      <div className="w-full">
         <HomeTeamCardTemplate teamName={data.teams.home.name} id={data.teams.home.id} goals={data.score} totalGoals={data.goals} winner={data.teams.home.winner} />
         <AwayTeamCardTemplate teamName={data.teams.away.name} id={data.teams.away.id} goals={data.score} totalGoals={data.goals} winner={data.teams.away.winner} />
       </div>
+
+      <div onClick={handleAddGameToFavorite} className="hover:cursor-pointer">
+        <CiStar className="w-6 h-6 text-orange-500" />
+      </div>
+
     </div>
   )
 }
