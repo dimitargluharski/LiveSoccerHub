@@ -3,65 +3,27 @@ import { CiStar } from "react-icons/ci";
 import { AwayTeamCardTemplate } from "../AwayTeamCardTemplate/AwayTeamCardTemplate";
 import { HomeTeamCardTemplate } from "../HomeTeamCardTemplate/HomeTeamCardTemplate";
 import { TimeCardTemplate } from "../TimeCardTemplate/TimeCardTemplate";
+import { Data } from "../../pages/HomePage/HomePage";
 
 type CardTemplateType = {
-  data: {
-    fixture: {
-      id: number;
-      status: {
-        elapsed: number;
-        extra: number;
-        long: string;
-        short: string;
-      }
-    },
-    teams: {
-      home: {
-        id: number;
-        name: string;
-        winner: boolean;
-        logo: string;
-      },
-      away: {
-        id: number;
-        name: string;
-        winner: boolean;
-        logo: string;
-      }
-    },
-    score: {
-      halftime: {
-        home: number;
-        away: number;
-      },
-      fulltime: {
-        home: number;
-        away: number;
-      },
-      penalty: {
-        home: number;
-        away: number;
-      },
-      extratime: {
-        home: number;
-        away: number;
-      }
-    },
-    league: {
-      name: string;
-      flag: string;
-      country: string;
-      season: number;
-    },
-    goals: {
-      home: number;
-      away: number;
-    },
-  },
-  handleAddGameToFavorite: (game: any) => void;
-}
+  data: Data;
+  handleAddGameToFavorite: (game: Data) => void;
+};
 
 export const CardTemplate = ({ data, handleAddGameToFavorite }: CardTemplateType) => {
+
+  const onAddToFavoriteClick = () => {
+    const game: Data = {
+      fixture: data.fixture,
+      teams: data.teams,
+      score: data.score,
+      league: data.league,
+      goals: data.goals,
+    };
+
+    handleAddGameToFavorite(game);
+  };
+
   return (
     <div className="flex items-center gap-2 rounded-md p-2 hover:shadow-md shadow-sm">
       <div>
@@ -73,7 +35,7 @@ export const CardTemplate = ({ data, handleAddGameToFavorite }: CardTemplateType
         <AwayTeamCardTemplate teamName={data.teams.away.name} id={data.teams.away.id} goals={data.score} totalGoals={data.goals} winner={data.teams.away.winner} />
       </div>
 
-      <div onClick={handleAddGameToFavorite} className="hover:cursor-pointer">
+      <div onClick={onAddToFavoriteClick} className="hover:cursor-pointer">
         <CiStar className="w-6 h-6 text-orange-500" />
       </div>
 
