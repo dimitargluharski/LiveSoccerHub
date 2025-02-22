@@ -2,6 +2,9 @@
 
 export const FavoriteGame = () => {
   return (
+    <div>
+      ddd
+    </div>
     // <section>
     //   {favorite.length} saved {favorite.length === 1 ? 'game' : 'games'}
     //   {favorite.length ? (favorite.map((game, index) => (
