@@ -34,11 +34,6 @@ export const CardTemplate = ({ data, handleAddGameToFavorite }: CardTemplateType
         <HomeTeamCardTemplate teamName={data.teams.home.name} id={data.teams.home.id} goals={data.score} totalGoals={data.goals} winner={data.teams.home.winner} />
         <AwayTeamCardTemplate teamName={data.teams.away.name} id={data.teams.away.id} goals={data.score} totalGoals={data.goals} winner={data.teams.away.winner} />
       </div>
-
-      <div onClick={onAddToFavoriteClick} className="hover:cursor-pointer">
-        <CiStar className="w-6 h-6 text-orange-500" />
-      </div>
-
     </div>
   )
 }
