@@ -1,5 +1,3 @@
-import { CiStar } from "react-icons/ci";
-
 import { AwayTeamCardTemplate } from "../AwayTeamCardTemplate/AwayTeamCardTemplate";
 import { HomeTeamCardTemplate } from "../HomeTeamCardTemplate/HomeTeamCardTemplate";
 import { TimeCardTemplate } from "../TimeCardTemplate/TimeCardTemplate";
@@ -7,22 +5,9 @@ import { Data } from "../../pages/HomePage/HomePage";
 
 type CardTemplateType = {
   data: Data;
-  handleAddGameToFavorite: (game: Data) => void;
 };
 
-export const CardTemplate = ({ data, handleAddGameToFavorite }: CardTemplateType) => {
-
-  const onAddToFavoriteClick = () => {
-    const game: Data = {
-      fixture: data.fixture,
-      teams: data.teams,
-      score: data.score,
-      league: data.league,
-      goals: data.goals,
-    };
-
-    handleAddGameToFavorite(game);
-  };
+export const CardTemplate = ({ data }: CardTemplateType) => {
 
   return (
     <div className="flex items-center gap-2 rounded-md p-2 hover:shadow-md shadow-sm">
