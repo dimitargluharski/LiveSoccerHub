@@ -1,9 +1,14 @@
-import { HomePage } from "./pages/HomePage/HomePage"
+import { Route, Routes } from "react-router-dom"
+import { Navbar } from "./components/Navbar/Navbar"
 
 function App() {
   return (
-    <div className="mx-auto max-w-3xl p-2">
-      <HomePage />
+    <div className="h-dvh w-dvw">
+      <Navbar />
+
+      <Routes>
+        <Route />
+      </Routes>
     </div>
   )
 }
