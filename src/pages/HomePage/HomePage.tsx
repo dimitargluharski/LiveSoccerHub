@@ -1,9 +1,31 @@
 import { useEffect, useState } from "react";
+
 import * as footballService from '../../services/getLiveGames';
 import { CardTemplate } from "../../components/CardTemplate/CardTemplate";
 import { HomePageInputSearchField } from "../../components/HomePageInputSearchField/HomePageInputSearchField";
-import { FavoriteGame } from "../../components/FavoriteGame/FavoriteGame";
-import Swal from "sweetalert2";
+
+export interface Event {
+  assist: {
+    id: number | null;
+    name: string | null;
+  };
+  comments: string | null;
+  detail: string;
+  player: {
+    id: number;
+    name: string;
+  };
+  team: {
+    id: number;
+    name: string;
+    logo: string;
+  };
+  time: {
+    elapsed: number;
+    extra: number | null;
+  };
+  type: string
+}
 
 export interface Data {
   fixture: {
@@ -57,18 +79,13 @@ export interface Data {
     home: number;
     away: number;
   },
+  events: Event[];
 }
 
 export const HomePage = () => {
   const [games, setGames] = useState<Data[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [allGames, setAllGames] = useState<Data[]>([]);
-  const [favoriteGames, setFavoriteGames] = useState<Data[]>([]);
-  const [isCollapsed, setIsCollapsed] = useState<boolean>(() => {
-    const savedState = localStorage.getItem('favoriteView');
-
-    return savedState ? JSON.parse(savedState) : false;
-  });
 
   useEffect(() => {
     footballService.getLiveGames()
@@ -78,26 +95,6 @@ export const HomePage = () => {
       })
       .catch((err) => console.log(err));
   }, []);
-
-  useEffect(() => {
-    const storedFavorites = localStorage.getItem('favoriteGames');
-
-    if (storedFavorites) {
-      setFavoriteGames(JSON.parse(storedFavorites));
-    }
-  }, []);
-
-  useEffect(() => {
-    if (favoriteGames.length > 0) {
-      localStorage.setItem('favoriteGames', JSON.stringify(favoriteGames));
-    }
-  }, [favoriteGames]);
-
-  useEffect(() => {
-    if (games.length > 0) {
-      localStorage.setItem('games', JSON.stringify(games));
-    }
-  }, [games]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const searchValue = event.target.value.toLowerCase();
@@ -115,86 +112,15 @@ export const HomePage = () => {
     }
   };
 
-
-  const handleAddGameToFavorite = (game: Data) => {
-    setFavoriteGames((oldValue) => {
-      const gameExists = oldValue.some((singleGame) => singleGame.fixture.id === game.fixture.id);
-
-      if (gameExists) {
-        Swal.fire({
-          text: 'This game is already in your favorites!',
-          icon: 'info',
-          backdrop: false,
-          position: 'bottom-right',
-          timer: 2500,
-          showConfirmButton: false
-        });
-
-        return oldValue;
-      } else {
-        const updatedFavorites = [...oldValue, game];
-
-        localStorage.setItem('favoriteGames', JSON.stringify(updatedFavorites));
-
-        Swal.fire({
-          text: 'The game has been successfully added to your favorites!',
-          icon: 'success',
-          backdrop: false,
-          position: 'bottom-right',
-          timer: 2500,
-          showConfirmButton: false
-        });
-
-        return updatedFavorites;
-      }
-    });
-  };
-
-  const handleRemoveFromFavorite = (game: Data) => {
-    const filteredArray = favoriteGames.filter((singleGame) => singleGame.fixture.id !== game.fixture.id);
-
-    setFavoriteGames(filteredArray);
-    localStorage.setItem('favoriteGames', JSON.stringify(filteredArray));
-
-    Swal.fire({
-      text: 'The game has been successfully removed from your favorites!',
-      icon: 'error',
-      backdrop: false,
-      timer: 2500,
-      position: 'bottom-right',
-      showConfirmButton: false
-    });
-  };
-
-  const handleCollapseSection = () => {
-    setIsCollapsed((prevValue) => {
-      const newValue = !prevValue;
-      localStorage.setItem('favoriteView', JSON.stringify(newValue));
-      return newValue;
-    });
-  };
-
   return (
     <div className="flex flex-col gap-2">
       <HomePageInputSearchField handleInputChange={handleInputChange} searchTerm={searchTerm} />
-
-      <section className="my-5 shadow-lg rounded-md">
-        <div className="p-2 text-lg cursor-pointer hover:bg-slate-200" onClick={handleCollapseSection}>
-          {`${favoriteGames.length === 1 ? `${favoriteGames.length} game saved` : `${favoriteGames.length} games saved`}`}
-        </div>
-
-        <div className={`${isCollapsed ? 'block' : 'hidden'} flex flex-col gap-2`}>
-          {favoriteGames.length > 0 && favoriteGames.map((game, index) => (
-            <FavoriteGame key={index} data={game} handleRemoveFromFavorite={handleRemoveFromFavorite} />
-          ))}
-        </div>
-      </section>
 
       {games.length ? (
         <>
           <div className="p-2 text-lg">{games.length} games</div>
           {games.map((game, index) => (
-            <CardTemplate key={index} data={game} handleAddGameToFavorite={handleAddGameToFavorite} />
+            <CardTemplate key={index} data={game} />
           ))}
         </>
       ) : (
