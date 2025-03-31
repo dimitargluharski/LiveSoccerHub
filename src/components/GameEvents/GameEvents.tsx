@@ -18,15 +18,16 @@ interface Event {
     elapsed: number;
     extra: number | null;
   };
-  type: string
+  type: string;
+  events: []
 }
 
 export const GameEvents = ({ events }: Event) => {
   console.log(events);
   return (
     <div className="flex justify-end">
-      {events.length ? (<div className="flex items-center w-full">
-        {`[${events.length} events]`}
+      {events.length ? (<div className={`flex items-center w-full p-2 ${events.length >= 10 ? 'bg-red-400 text-white rounded-md' : ''}`}>
+        {`${events.length} events`}
       </div>) : 'N/A'}
     </div>
   )

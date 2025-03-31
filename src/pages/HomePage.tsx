@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 
-import * as footballService from '../../services/getLiveGames';
-import { CardTemplate } from "../../components/CardTemplate/CardTemplate";
-import { HomePageInputSearchField } from "../../components/HomePageInputSearchField/HomePageInputSearchField";
+import * as footballService from '../services/getLiveGames';
+import { CardTemplate } from "../components/CardTemplate/CardTemplate";
+import { HomePageInputSearchField } from "../components/HomePageInputSearchField/HomePageInputSearchField";
+import { GamesCard } from "./HomePage/GamesCard";
 
 export interface Event {
   assist: {
@@ -112,13 +113,30 @@ export const HomePage = () => {
     }
   };
 
+  const totalGamesCount = games.length;
+
+  const mapAllCountries = games.map((game) => game.league.country);
+  const setOfUniqueCountries = [...new Set(mapAllCountries)];
+  const totalUniqueCountriesCount = setOfUniqueCountries.length;
+
+  const countEvents = games
+    .map((game) => game.events)
+    .flat()
+    .filter((event) => event)
+    .length;
+
   return (
     <div className="flex flex-col gap-2">
+      <div className="flex gap-5">
+        <GamesCard counter={totalGamesCount} text="games" />
+        <GamesCard counter={totalUniqueCountriesCount} text="countires" />
+        <GamesCard counter={countEvents} text="events" />
+      </div>
+
       <HomePageInputSearchField handleInputChange={handleInputChange} searchTerm={searchTerm} />
 
       {games.length ? (
         <>
-          <div className="p-2 text-lg">{games.length} games</div>
           {games.map((game, index) => (
             <CardTemplate key={index} data={game} />
           ))}

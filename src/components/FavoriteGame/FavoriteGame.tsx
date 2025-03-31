@@ -1,6 +1,6 @@
 import { IoMdCloseCircleOutline } from "react-icons/io";
 
-import { Data } from "../../pages/HomePage/HomePage";
+import { Data } from "../../pages/HomePage";
 import { AwayTeamCardTemplate } from "../AwayTeamCardTemplate/AwayTeamCardTemplate";
 import { HomeTeamCardTemplate } from "../HomeTeamCardTemplate/HomeTeamCardTemplate";
 import { TimeCardTemplate } from "../TimeCardTemplate/TimeCardTemplate";
