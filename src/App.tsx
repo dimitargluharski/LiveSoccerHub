@@ -1,13 +1,13 @@
 import { Route, Routes } from "react-router-dom"
-import { Navbar } from "./components/Navbar/Navbar"
+import { HomePage } from "./pages/HomePage"
 
 function App() {
   return (
-    <div className="h-dvh w-dvw">
-      <Navbar />
+    <div className="h-dvh w-dvw md:max-w-5xl mx-auto">
+      {/* <Navbar /> */}
 
       <Routes>
-        <Route />
+        <Route path="/" element={<HomePage />} />
       </Routes>
     </div>
   )

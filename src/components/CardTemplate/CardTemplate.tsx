@@ -1,7 +1,7 @@
 import { AwayTeamCardTemplate } from "../AwayTeamCardTemplate/AwayTeamCardTemplate";
 import { HomeTeamCardTemplate } from "../HomeTeamCardTemplate/HomeTeamCardTemplate";
 import { TimeCardTemplate } from "../TimeCardTemplate/TimeCardTemplate";
-import { Data } from "../../pages/HomePage/HomePage";
+import { Data } from "../../pages/HomePage";
 import { GameEvents } from "../GameEvents/GameEvents";
 
 type CardTemplateType = {
