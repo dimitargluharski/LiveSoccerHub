@@ -23,9 +23,8 @@ interface Event {
 }
 
 export const GameEvents = ({ events }: Event) => {
-  console.log(events);
   return (
-    <div className="flex justify-end">
+    <div className="flex justify-end text-slate-500">
       {events.length ? (<div className={`flex items-center w-full p-2 ${events.length >= 10 ? 'bg-red-400 text-white rounded-md' : ''}`}>
         {`${events.length} events`}
       </div>) : 'N/A'}

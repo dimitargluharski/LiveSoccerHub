@@ -6,10 +6,14 @@ interface GamesCardProp {
 
 export const GamesCard = ({ counter, text }: GamesCardProp) => {
   return (
-    // <div className="w-full flex rounded-md bg-white-500 bg-slate-200 p-2 shadow-md">
-    <div className="flex p-2 bg-slate-200 rounded-md">
-      {counter} {text}
+    <div className="flex gap-1 items-center px-2 py-1 text-slate-400">
+      <span>
+        {counter}
+      </span>
+
+      <span>
+        {text}
+      </span>
     </div>
-    // </div>
   )
 }

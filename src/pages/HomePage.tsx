@@ -4,7 +4,7 @@ import * as footballService from '../services/getLiveGames';
 import { CardTemplate } from "../components/CardTemplate/CardTemplate";
 import { HomePageInputSearchField } from "../components/HomePageInputSearchField/HomePageInputSearchField";
 import { GamesCard } from "./HomePage/GamesCard";
-import { Dropdown } from "./HomePage/Dropdown";
+import { Filters } from "./HomePage/Filters";
 
 export interface Event {
   assist: {
@@ -101,7 +101,6 @@ export const HomePage = () => {
     .filter((event) => event)
     .length;
 
-
   const sortByTime = (data: any) => {
     const sortedByTime = [...data].sort((a, b) => a.fixture.status.elapsed - b.fixture.status.elapsed);
     setGames(sortedByTime);
@@ -152,11 +151,11 @@ export const HomePage = () => {
   }, []);
 
   return (
-    <div className="flex flex-col gap-2 relative">
-      <div className="flex gap-5">
+    <div className="flex flex-col p-2 gap-2 relative">
+      <div className="flex">
         <GamesCard counter={totalGamesCount} text="games" />
+        <GamesCard counter={countEvents} text="in-game events" />
         <GamesCard counter={totalUniqueCountriesCount} text="countires" />
-        <GamesCard counter={countEvents} text="events" />
       </div>
 
       <div ref={stickyInputRef}
@@ -168,7 +167,7 @@ export const HomePage = () => {
       {games.length ? (
         <>
           <div className="w-full flex">
-            <Dropdown
+            <Filters
               data={games}
               sortByTime={sortByTime}
               sortByEventsCount={sortByEventsCount}

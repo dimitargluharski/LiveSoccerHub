@@ -12,7 +12,7 @@ export const filterOpsions = [
   { id: 2, name: 'events', action: 'sortByEventsCount' }
 ];
 
-export const Dropdown = ({ sortByTime, sortByEventsCount, data }: DropdownProps) => {
+export const Filters = ({ sortByTime, sortByEventsCount, data }: DropdownProps) => {
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
 
   const handleChange = (string: string) => {
@@ -28,9 +28,12 @@ export const Dropdown = ({ sortByTime, sortByEventsCount, data }: DropdownProps)
   };
 
   return (
-    <div className="flex gap-2">
-      {filterOpsions.map((filter) => (
-        <div className={`rounded-md border-1 p-1 hover:cursor-pointer ${activeFilter === filter.name ? 'text-green-500' : 'text-slate-300'}`} onClick={() => handleChange(filter.name)}>
+    <div className="flex gap-1">
+      {filterOpsions.map((filter, index) => (
+        <div
+          key={index}
+          className={`rounded-md border-1 px-2 py-1 hover:cursor-pointer ${activeFilter === filter.name ? 'text-green-400' : 'text-slate-400'}`}
+          onClick={() => handleChange(filter.name)}>
           {filter.name}
         </div>
       ))}
