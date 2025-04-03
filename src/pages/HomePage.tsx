@@ -149,7 +149,7 @@ export const HomePage = () => {
 
       {games.length ? (
         <>
-          <div className="w-full flex justify-end">
+          <div className="w-full flex">
             <Dropdown
               data={games}
               sortByTime={sortByTime}
