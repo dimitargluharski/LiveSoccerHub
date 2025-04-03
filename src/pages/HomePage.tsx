@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import * as footballService from '../services/getLiveGames';
 import { CardTemplate } from "../components/CardTemplate/CardTemplate";
@@ -88,6 +88,29 @@ export const HomePage = () => {
   const [games, setGames] = useState<Data[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [allGames, setAllGames] = useState<Data[]>([]);
+  const totalGamesCount = games.length;
+  const mapAllCountries = games.map((game) => game.league.country);
+  const setOfUniqueCountries = [...new Set(mapAllCountries)];
+  const totalUniqueCountriesCount = setOfUniqueCountries.length;
+  const stickyInputRef = useRef(null);
+  const [isScrolling, setIsScrolling] = useState<boolean>(false);
+
+  const countEvents = games
+    .map((game) => game.events)
+    .flat()
+    .filter((event) => event)
+    .length;
+
+
+  const sortByTime = (data: any) => {
+    const sortedByTime = [...data].sort((a, b) => a.fixture.status.elapsed - b.fixture.status.elapsed);
+    setGames(sortedByTime);
+  }
+
+  const sortByEventsCount = (data: any) => {
+    const sortedByEvents = [...data].sort((a, b) => b.events.length - a.events.length);
+    setGames(sortedByEvents);
+  }
 
   useEffect(() => {
     footballService.getLiveGames()
@@ -114,38 +137,33 @@ export const HomePage = () => {
     }
   };
 
-  const totalGamesCount = games.length;
+  useEffect(() => {
+    if (!stickyInputRef.current) return;
 
-  const mapAllCountries = games.map((game) => game.league.country);
-  const setOfUniqueCountries = [...new Set(mapAllCountries)];
-  const totalUniqueCountriesCount = setOfUniqueCountries.length;
+    const handleScroll = () => {
+      setIsScrolling(window.scrollY > 0);
+    };
 
-  const countEvents = games
-    .map((game) => game.events)
-    .flat()
-    .filter((event) => event)
-    .length;
+    window.addEventListener('scroll', handleScroll);
 
-
-  const sortByTime = (data: any) => {
-    const sortedByTime = [...data].sort((a, b) => a.fixture.status.elapsed - b.fixture.status.elapsed);
-    setGames(sortedByTime);
-  }
-
-  const sortByEventsCount = (data: any) => {
-    const sortedByEvents = [...data].sort((a, b) => b.events.length - a.events.length);
-    setGames(sortedByEvents);
-  }
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 relative">
       <div className="flex gap-5">
         <GamesCard counter={totalGamesCount} text="games" />
         <GamesCard counter={totalUniqueCountriesCount} text="countires" />
         <GamesCard counter={countEvents} text="events" />
       </div>
 
-      <HomePageInputSearchField handleInputChange={handleInputChange} searchTerm={searchTerm} />
+      <div ref={stickyInputRef}
+        className={`${isScrolling ? 'sticky top-0 z-10' : ''} bg-white py-1`}
+      >
+        <HomePageInputSearchField handleInputChange={handleInputChange} searchTerm={searchTerm} />
+      </div>
 
       {games.length ? (
         <>
