@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Data } from "../HomePage";
 
 interface DropdownProps {
@@ -6,29 +7,33 @@ interface DropdownProps {
   data: Data[];
 }
 
-export const dropdownOptions = [
+export const filterOpsions = [
   { id: 1, name: 'time', action: 'sortByTime' },
   { id: 2, name: 'events', action: 'sortByEventsCount' }
 ];
 
 export const Dropdown = ({ sortByTime, sortByEventsCount, data }: DropdownProps) => {
-  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedOption = event.target.value;
+  const [activeFilter, setActiveFilter] = useState<string | null>(null);
 
-    if (selectedOption === 'time') {
+  const handleChange = (string: string) => {
+    setActiveFilter(string);
+
+    if (activeFilter === string) {
+      setActiveFilter(null);
+    } else if (string === 'time') {
       sortByTime(data);
-    } else if (selectedOption === 'events') {
+    } else if (string === 'events') {
       sortByEventsCount(data);
     }
   };
 
   return (
-    <select name="dropdown" id="dropdown" className="p-2" onChange={handleChange}>
-      {dropdownOptions.map((option) => (
-        <option key={option.id} value={option.name}>
-          {option.name}
-        </option>
+    <div className="flex gap-2">
+      {filterOpsions.map((filter) => (
+        <div className={`rounded-md border-1 p-1 hover:cursor-pointer ${activeFilter === filter.name ? 'text-green-500' : 'text-slate-300'}`} onClick={() => handleChange(filter.name)}>
+          {filter.name}
+        </div>
       ))}
-    </select>
+    </div>
   );
 };
