@@ -181,7 +181,7 @@ export const HomePage = () => {
       </div>
 
       <div ref={stickyInputRef}
-        className={`${isScrolling ? 'sticky top-0 z-10' : ''} bg-white py-1`}
+        className={`${isScrolling ? 'sticky top-0 z-10' : ''} bg-white rounded-md`}
       >
         <HomePageInputSearchField handleInputChange={handleInputChange} searchTerm={searchTerm} />
       </div>
