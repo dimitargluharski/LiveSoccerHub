@@ -10,7 +10,7 @@ type CardTemplateType = {
 
 export const CardTemplate = ({ data }: CardTemplateType) => {
   return (
-    <div className="flex items-center gap-2 rounded-md p-2 hover:shadow-md shadow-sm">
+    <div className="flex items-center gap-2 rounded-md p-2 hover:shadow-md shadow-sm dark:bg-slate-800 bg-slate-100">
       <div>
         <TimeCardTemplate time={data.fixture.status} />
       </div>
