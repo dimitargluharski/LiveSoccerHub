@@ -1,3 +1,5 @@
+import { getEventCountString } from "../../utils/getEventCountString";
+
 interface Event {
   assist: {
     id: number | null;
@@ -26,7 +28,7 @@ export const GameEvents = ({ events }: Event) => {
   return (
     <div className="flex justify-end text-slate-500">
       {events.length ? (<div className={`flex items-center w-full p-2 ${events.length >= 10 ? 'dark:bg-red-500/60 bg-red-500/65 text-white rounded-md' : ''}`}>
-        {`${events.length} events`}
+        {getEventCountString(events.length)}
       </div>) : 'N/A'}
     </div>
   )
