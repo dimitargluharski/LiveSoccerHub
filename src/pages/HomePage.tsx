@@ -1,10 +1,13 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 
 import * as footballService from '../services/getLiveGames';
 import { CardTemplate } from "../components/CardTemplate/CardTemplate";
 import { HomePageInputSearchField } from "../components/HomePageInputSearchField/HomePageInputSearchField";
 import { GamesCard } from "./HomePage/GamesCard";
 import { Filters } from "./HomePage/Filters";
+import { ThemeContext } from "../context/ThemeContext";
+import { IoSunny } from "react-icons/io5";
+import { IoMoon } from "react-icons/io5";
 
 export interface Event {
   assist: {
@@ -95,6 +98,14 @@ export const HomePage = () => {
   const stickyInputRef = useRef(null);
   const [isScrolling, setIsScrolling] = useState<boolean>(false);
 
+  const themeContext = useContext(ThemeContext);
+
+  if (!themeContext) {
+    throw new Error("ThemeContext is not provided.");
+  }
+
+  const { theme, toggleTheme } = themeContext;
+
   const countEvents = games
     .map((game) => game.events)
     .flat()
@@ -152,10 +163,21 @@ export const HomePage = () => {
 
   return (
     <div className="flex flex-col p-2 gap-2 relative">
-      <div className="flex">
-        <GamesCard counter={totalGamesCount} text="games" />
-        <GamesCard counter={countEvents} text="in-game events" />
-        <GamesCard counter={totalUniqueCountriesCount} text="countires" />
+      <div className="flex justify-between items-center">
+
+        <div className="flex">
+          <GamesCard counter={totalGamesCount} text="games" />
+          <GamesCard counter={countEvents} text="in-game events" />
+          <GamesCard counter={totalUniqueCountriesCount} text="countires" />
+        </div>
+
+        <div className="flex hover:cursor-pointer" onClick={toggleTheme}>
+          {theme === 'light' ? (
+            <IoMoon className="dark:text-yellow-500 text-slate-400" />
+          ) : (
+            <IoSunny className="dark:text-yellow-500 text-slate-400" />
+          )}
+        </div>
       </div>
 
       <div ref={stickyInputRef}
@@ -173,6 +195,7 @@ export const HomePage = () => {
               sortByEventsCount={sortByEventsCount}
             />
           </div>
+
           {games.map((game, index) => (
             <CardTemplate key={index} data={game} />
           ))}
