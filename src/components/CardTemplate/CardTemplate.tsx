@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { GameEvents } from "../GameEvents/GameEvents";
-import { MatchPredictionWinner } from "../MatchPredictionWinner/MatchPredictionWinner";
+// import { MatchPredictionWinner } from "../MatchPredictionWinner/MatchPredictionWinner";
 import { TimeCardTemplate } from "../TimeCardTemplate/TimeCardTemplate";
 import { HomeTeamCardTemplate } from "../HomeTeamCardTemplate/HomeTeamCardTemplate";
 import { AwayTeamCardTemplate } from "../AwayTeamCardTemplate/AwayTeamCardTemplate";
@@ -14,12 +14,12 @@ type CardTemplateType = {
 
 
 export const CardTemplate = ({ data }: CardTemplateType) => {
-  const [hidePrediction, setHidePrediction] = useState(false);
+  // const [hidePrediction, setHidePrediction] = useState(false);
   const [currentEventIndex, setCurrentEventIndex] = useState(0);
 
-  const toggleShowWinnerPrediction = () => {
-    setHidePrediction((prevState) => !prevState);
-  };
+  // const toggleShowWinnerPrediction = () => {
+  //   setHidePrediction((prevState) => !prevState);
+  // };
 
   const maxVisibleEvents = 5;
 
