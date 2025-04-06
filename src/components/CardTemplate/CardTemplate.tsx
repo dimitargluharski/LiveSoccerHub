@@ -5,6 +5,7 @@ import { Data } from "../../pages/HomePage";
 import { GameEvents } from "../GameEvents/GameEvents";
 import { MatchPredictionWinner } from "../MatchPredictionWinner/MatchPredictionWinner";
 import { useState } from "react";
+import { InGameEvents } from "../InGameEvents/InGameEvents";
 
 type CardTemplateType = {
   data: Data;
@@ -35,6 +36,9 @@ export const CardTemplate = ({ data }: CardTemplateType) => {
 
         {hidePrediction && <MatchPredictionWinner gameId={data.fixture.id} />}
 
+        <div className="max-w-fit">
+          <InGameEvents events={data.events} />
+        </div>
       </div>
 
       <div className="flex justify-end w-xs">
