@@ -24,7 +24,6 @@ export interface Event {
 }
 
 export const InGameEvents = ({ events }: { events: Event[] }) => {
-  console.log('events', events);
   return (
     <div className="flex gap-2">
       {events.map((game, index) => (
