@@ -73,7 +73,7 @@ export const CardTemplate = ({ data }: CardTemplateType) => {
                   disabled={currentEventIndex === 0}
                   className={`px-2 py-1 rounded-md ${currentEventIndex === 0
                     ? "bg-gray-300 cursor-not-allowed rotate-270"
-                    : "bg-blue-500 text-white hover:bg-blue-600 rotate-270"
+                    : "bg-blue-500 text-white hover:bg-blue-600 rotate-270 hover:cursor-pointer"
                     }`}
                 >
                   <FaArrowUp />
@@ -88,7 +88,7 @@ export const CardTemplate = ({ data }: CardTemplateType) => {
                   disabled={currentEventIndex + maxVisibleEvents >= data.events.length}
                   className={`px-2 py-1 rounded-md ${currentEventIndex + maxVisibleEvents >= data.events.length
                     ? "bg-gray-300 cursor-not-allowed rotate-270"
-                    : "bg-blue-500 text-white hover:bg-blue-600 rotate-270"
+                    : "bg-blue-500 text-white hover:bg-blue-600 rotate-270 hover:cursor-pointer"
                     }`}
                 >
                   <FaArrowDown />
