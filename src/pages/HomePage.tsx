@@ -122,15 +122,6 @@ export const HomePage = () => {
     setGames(sortedByEvents);
   }
 
-  useEffect(() => {
-    footballService.getLiveGames()
-      .then(response => {
-        setGames(response);
-        setAllGames(response);
-      })
-      .catch((err) => console.log(err));
-  }, []);
-
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const searchValue = event.target.value.toLowerCase();
     setSearchTerm(searchValue);
@@ -146,6 +137,21 @@ export const HomePage = () => {
       setGames(filteredArray);
     }
   };
+
+  console.log(games);
+
+  const gameEvents = games.map((event) => event.events);
+
+  console.log(gameEvents)
+
+  useEffect(() => {
+    footballService.getLiveGames()
+      .then(response => {
+        setGames(response);
+        setAllGames(response);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   useEffect(() => {
     if (!stickyInputRef.current) return;
