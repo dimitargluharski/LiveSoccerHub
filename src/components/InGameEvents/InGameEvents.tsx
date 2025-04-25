@@ -1,4 +1,4 @@
-import { getInGameEvent } from "../../utils/getInGameEvent";
+import { HoverCardComponent } from "@/pages/HomePage/HoverCard";
 
 export interface Event {
   assist: {
@@ -27,9 +27,7 @@ export const InGameEvents = ({ events }: { events: Event[] }) => {
   return (
     <div className="flex gap-2">
       {events.map((game, index) => (
-        <div key={index}>
-          {getInGameEvent(game)}
-        </div>
+        <HoverCardComponent key={index} data={game} />
       ))}
     </div>
   )
