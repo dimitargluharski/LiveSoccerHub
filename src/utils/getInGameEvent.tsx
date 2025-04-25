@@ -3,8 +3,6 @@ import { GiCardPlay } from "react-icons/gi";
 import { FaRotate } from "react-icons/fa6";
 import { PiVideoCameraFill } from "react-icons/pi";
 
-// TODO: Fix VAR events
-
 export const getInGameEvent = (gameEvent: any) => {
   const { type, detail } = gameEvent;
 
