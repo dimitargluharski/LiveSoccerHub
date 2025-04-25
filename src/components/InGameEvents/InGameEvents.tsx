@@ -1,4 +1,4 @@
-import { HoverCardComponent } from "@/pages/HomePage/HoverCard";
+import { HoverCardComponent } from "@/pages/LiveGamesPage/HoverCard";
 
 export interface Event {
   assist: {

@@ -3,8 +3,8 @@ import { useContext, useEffect, useRef, useState } from "react";
 import * as footballService from '../services/getLiveGames';
 import { CardTemplate } from "../components/CardTemplate/CardTemplate";
 import { HomePageInputSearchField } from "../components/HomePageInputSearchField/HomePageInputSearchField";
-import { GamesCard } from "./HomePage/GamesCard";
-import { Filters } from "./HomePage/Filters";
+import { GamesCard } from "./LiveGamesPage/GamesCard";
+import { Filters } from "./LiveGamesPage/Filters";
 import { ThemeContext } from "../context/ThemeContext";
 import { IoSunny } from "react-icons/io5";
 import { IoMoon } from "react-icons/io5";
@@ -87,7 +87,7 @@ export interface Data {
   events: Event[];
 }
 
-export const HomePage = () => {
+export const LiveGamesPage = () => {
   const [games, setGames] = useState<Data[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [allGames, setAllGames] = useState<Data[]>([]);

@@ -5,7 +5,7 @@ import { TimeCardTemplate } from "../TimeCardTemplate/TimeCardTemplate";
 import { HomeTeamCardTemplate } from "../HomeTeamCardTemplate/HomeTeamCardTemplate";
 import { AwayTeamCardTemplate } from "../AwayTeamCardTemplate/AwayTeamCardTemplate";
 import { InGameEvents } from "../InGameEvents/InGameEvents";
-import { Data } from "../../pages/HomePage";
+import { Data } from "../../pages/LiveGamesPage";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 
 type CardTemplateType = {

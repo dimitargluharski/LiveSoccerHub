@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Data } from "../HomePage";
+import { Data } from "../LiveGamesPage";
 
 interface DropdownProps {
   sortByTime: (data: Data[]) => void;
