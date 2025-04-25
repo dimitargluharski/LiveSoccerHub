@@ -6,7 +6,7 @@ import { PiVideoCameraFill } from "react-icons/pi";
 // TODO: Fix VAR events
 
 export const getInGameEvent = (gameEvent: any) => {
-  const { type, detail, time: { elapsed } } = gameEvent;
+  const { type, detail } = gameEvent;
 
   switch (type) {
     case "Goal":
