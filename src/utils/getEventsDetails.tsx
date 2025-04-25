@@ -36,6 +36,11 @@ export const getEventDetails = (
         icon: <FaFutbol className="text-yellow-600 dark:text-yellow-400 w-6 h-6" />,
         text: "Penalty",
       };
+    case "Missed Penalty":
+      return {
+        icon: <FaFutbol className="text-red-600 dark:text-red-600 w-6 h-6" />,
+        text: "Missed Penalty",
+      };
     case "Yellow Card":
       return {
         icon: <GiCardPlay className="text-yellow-600 dark:text-yellow-400 rotate-180 w-6 h-6" />,
