@@ -14,14 +14,12 @@ export const getInGameEvent = (gameEvent: any) => {
         return (
           <IoFootball
             className="w-6 h-6 text-red-500"
-            title={`${elapsed}' ${detail || "No details"}`}
           />
         )
       }
       return (
         <IoFootball
           className="w-6 h-6 text-green-500"
-          title={`${elapsed}' ${detail || "No details"}`}
         />
       );
     case "Card":
@@ -29,42 +27,55 @@ export const getInGameEvent = (gameEvent: any) => {
         return (
           <GiCardPlay
             className="w-6 h-6 text-red-500 rotate-180"
-            title={`${elapsed}' Red Card`}
           />
         );
       } else if (detail === "Yellow Card") {
         return (
           <GiCardPlay
             className="w-6 h-6 text-yellow-500 rotate-180"
-            title={`${elapsed}' Yellow Card`}
           />
         );
       }
-      return <GiCardPlay className="w-5 h-5 rotate-180" title="Card" />;
+      return <GiCardPlay className="w-5 h-5 rotate-180" />;
     case "subst":
       return (
         <FaRotate
           className="w-6 h-6 text-blue-500"
-          title={`${elapsed}' Substitution`}
         />
       );
     case "Var":
-      if (detail === 'Goal cancelled') {
+      if (detail === 'Goal Disallowed - Foul') {
         return (
           <IoFootball
             className="w-6 h-6 text-red-500"
-            title={`${elapsed}' ${detail || "No details"}`}
+          />
+        );
+      } else if (detail === 'Goal cancelled') {
+        return (
+          <IoFootball
+            className="w-6 h-6 text-red-500"
           />
         );
       } else if (detail === 'Penalty confirmed') {
         return (
           <IoFootball
             className="w-6 h-6 text-red-500"
-            title={`${elapsed}' ${detail || "No details"}`}
           />
-        )
+        );
+      } else if (detail === 'Goal Disallowed - offside') {
+        return (
+          <IoFootball
+            className="w-6 h-6 text-red-500"
+          />
+        );
+      } else if (detail === 'Goal Disallowed') {
+        return (
+          <IoFootball
+            className="w-6 h-6 text-red-500"
+          />
+        );
       }
-      return <PiVideoCameraFill className="w-6 h-6 dark:text-slate-500" title="VAR" />;
+      return <PiVideoCameraFill className="w-6 h-6 dark:text-slate-500" />;
     default:
       return null;
   }

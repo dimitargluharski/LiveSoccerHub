@@ -138,12 +138,6 @@ export const HomePage = () => {
     }
   };
 
-  console.log(games);
-
-  const gameEvents = games.map((event) => event.events);
-
-  console.log(gameEvents)
-
   useEffect(() => {
     footballService.getLiveGames()
       .then(response => {
