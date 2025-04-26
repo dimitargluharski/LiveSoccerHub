@@ -12,10 +12,6 @@ interface MatchPredictionWinner {
 export const MatchPredictionWinner = ({ gameId }: { gameId: number }) => {
   const [data, setData] = useState<MatchPredictionWinner[]>([]);
 
-  // save to local storage
-
-
-
   const fetchPrediction = () => {
     predictionService
       .getLiveGames(gameId)
