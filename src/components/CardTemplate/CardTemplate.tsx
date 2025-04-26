@@ -10,17 +10,11 @@ import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 
 type CardTemplateType = {
   data: Data;
+  isPaidFeatureEnabled: boolean
 };
 
-
-export const CardTemplate = ({ data }: CardTemplateType) => {
-  // const [hidePrediction, setHidePrediction] = useState(false);
+export const CardTemplate = ({ data, isPaidFeatureEnabled }: CardTemplateType) => {
   const [currentEventIndex, setCurrentEventIndex] = useState(0);
-
-  // const toggleShowWinnerPrediction = () => {
-  //   setHidePrediction((prevState) => !prevState);
-  // };
-
   const maxVisibleEvents = 5;
 
   const handlePrevEvents = () => {
@@ -64,7 +58,7 @@ export const CardTemplate = ({ data }: CardTemplateType) => {
           />
         </div>
 
-        {data.events.length > 0 ? (
+        {isPaidFeatureEnabled && data.events.length > 0 ? (
           <div className="flex-1 max-w-full">
             <div className="flex items-center justify-between gap-2">
               {data.events.length > maxVisibleEvents && (

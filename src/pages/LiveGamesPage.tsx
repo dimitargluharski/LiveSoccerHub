@@ -1,4 +1,7 @@
 import { useContext, useEffect, useRef, useState } from "react";
+import { useMemo, useCallback } from "react";
+import { IoSunny } from "react-icons/io5";
+import { IoMoon } from "react-icons/io5";
 
 import * as footballService from '../services/getLiveGames';
 import { CardTemplate } from "../components/CardTemplate/CardTemplate";
@@ -6,8 +9,6 @@ import { HomePageInputSearchField } from "../components/HomePageInputSearchField
 import { GamesCard } from "./LiveGamesPage/GamesCard";
 import { Filters } from "./LiveGamesPage/Filters";
 import { ThemeContext } from "../context/ThemeContext";
-import { IoSunny } from "react-icons/io5";
-import { IoMoon } from "react-icons/io5";
 
 export interface Event {
   assist: {
@@ -87,14 +88,14 @@ export interface Data {
   events: Event[];
 }
 
-export const LiveGamesPage = () => {
+type isPaidFeatureEnabledType = {
+  isPaidFeatureEnabled: boolean;
+}
+
+export const LiveGamesPage = ({ isPaidFeatureEnabled }: isPaidFeatureEnabledType) => {
   const [games, setGames] = useState<Data[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [allGames, setAllGames] = useState<Data[]>([]);
-  const totalGamesCount = games.length;
-  const mapAllCountries = games.map((game) => game.league.country);
-  const setOfUniqueCountries = [...new Set(mapAllCountries)];
-  const totalUniqueCountriesCount = setOfUniqueCountries.length;
   const stickyInputRef = useRef(null);
   const [isScrolling, setIsScrolling] = useState<boolean>(false);
 
@@ -106,23 +107,34 @@ export const LiveGamesPage = () => {
 
   const { theme, toggleTheme } = themeContext;
 
-  const countEvents = games
-    .map((game) => game.events)
-    .flat()
-    .filter((event) => event)
-    .length;
+  // Memoized values
+  const totalGamesCount = useMemo(() => games.length, [games]);
 
-  const sortByTime = (data: any) => {
+  const totalUniqueCountriesCount = useMemo(() => {
+    const mapAllCountries = games.map((game) => game.league.country);
+    const setOfUniqueCountries = [...new Set(mapAllCountries)];
+    return setOfUniqueCountries.length;
+  }, [games]);
+
+  const countEvents = useMemo(() => {
+    return games
+      .map((game) => game.events)
+      .flat()
+      .filter((event) => event)
+      .length;
+  }, [games]);
+
+  const sortByTime = useCallback((data: Data[]) => {
     const sortedByTime = [...data].sort((a, b) => a.fixture.status.elapsed - b.fixture.status.elapsed);
     setGames(sortedByTime);
-  }
+  }, []);
 
-  const sortByEventsCount = (data: any) => {
+  const sortByEventsCount = useCallback((data: Data[]) => {
     const sortedByEvents = [...data].sort((a, b) => b.events.length - a.events.length);
     setGames(sortedByEvents);
-  }
+  }, []);
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const searchValue = event.target.value.toLowerCase();
     setSearchTerm(searchValue);
 
@@ -136,7 +148,7 @@ export const LiveGamesPage = () => {
 
       setGames(filteredArray);
     }
-  };
+  }, [allGames]);
 
   useEffect(() => {
     footballService.getLiveGames()
@@ -168,7 +180,7 @@ export const LiveGamesPage = () => {
         <div className="flex">
           <GamesCard counter={totalGamesCount} text="games" />
           <GamesCard counter={countEvents} text="in-game events" />
-          <GamesCard counter={totalUniqueCountriesCount} text="countires" />
+          <GamesCard counter={totalUniqueCountriesCount} text="countries" />
         </div>
 
         <div className="flex hover:cursor-pointer" onClick={toggleTheme}>
@@ -197,7 +209,7 @@ export const LiveGamesPage = () => {
           </div>
 
           {games.map((game, index) => (
-            <CardTemplate key={index} data={game} />
+            <CardTemplate key={index} data={game} isPaidFeatureEnabled={isPaidFeatureEnabled} />
           ))}
         </>
       ) : (
