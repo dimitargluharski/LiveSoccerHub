@@ -1,14 +1,11 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useMemo, useCallback } from "react";
-import { IoSunny } from "react-icons/io5";
-import { IoMoon } from "react-icons/io5";
 
 import * as footballService from '../services/getLiveGames';
 import { CardTemplate } from "../components/CardTemplate/CardTemplate";
 import { HomePageInputSearchField } from "../components/HomePageInputSearchField/HomePageInputSearchField";
 import { GamesCard } from "./LiveGamesPage/GamesCard";
 import { Filters } from "./LiveGamesPage/Filters";
-import { ThemeContext } from "../context/ThemeContext";
 
 export interface Event {
   assist: {
@@ -99,14 +96,6 @@ export const LiveGamesPage = ({ isPaidFeatureEnabled }: isPaidFeatureEnabledType
   const stickyInputRef = useRef(null);
   const [isScrolling, setIsScrolling] = useState<boolean>(false);
 
-  const themeContext = useContext(ThemeContext);
-
-  if (!themeContext) {
-    throw new Error("ThemeContext is not provided.");
-  }
-
-  const { theme, toggleTheme } = themeContext;
-
   // Memoized values
   const totalGamesCount = useMemo(() => games.length, [games]);
 
@@ -181,14 +170,6 @@ export const LiveGamesPage = ({ isPaidFeatureEnabled }: isPaidFeatureEnabledType
           <GamesCard counter={totalGamesCount} text="games" />
           <GamesCard counter={countEvents} text="in-game events" />
           <GamesCard counter={totalUniqueCountriesCount} text="countries" />
-        </div>
-
-        <div className="flex hover:cursor-pointer" onClick={toggleTheme}>
-          {theme === 'light' ? (
-            <IoMoon className="dark:text-yellow-500 text-slate-400" />
-          ) : (
-            <IoSunny className="dark:text-yellow-500 text-slate-400" />
-          )}
         </div>
       </div>
 
