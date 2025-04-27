@@ -9,6 +9,8 @@ import { TeamDetailsPage } from "./pages/TeamDetailsPage";
 import { UserContext } from "./context/UserContext";
 import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
+import { ThemeContext } from "./context/ThemeContext";
+import { SwitchButton } from "./components/SwitchButton/SwitchButton";
 
 const isPaidFeatureEnabled = true;
 
@@ -25,6 +27,13 @@ const pages = [
 
 function App() {
   const userContext = useContext(UserContext);
+  const themeContext = useContext(ThemeContext);
+
+  if (!themeContext) {
+    throw new Error("ThemeContext is not provided.");
+  }
+
+  const { theme, toggleTheme } = themeContext;
 
   return (
     <>
@@ -46,6 +55,9 @@ function App() {
         </div>
 
         <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4">
+            <SwitchButton theme={theme} toggleTheme={toggleTheme} />
+          </div>
           {userContext?.isUserLoggedIn() ? (
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2">

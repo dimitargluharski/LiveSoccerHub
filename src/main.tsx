@@ -7,10 +7,10 @@ import { UserProvider } from './context/UserContext.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <BrowserRouter>
-    <UserProvider>
-      <ThemeContextProvider>
+    <ThemeContextProvider>
+      <UserProvider>
         <App />
-      </ThemeContextProvider>
-    </UserProvider>
+      </UserProvider>
+    </ThemeContextProvider>
   </BrowserRouter>
 )
