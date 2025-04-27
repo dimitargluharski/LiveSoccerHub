@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { FaBullseye, FaCalendarAlt, FaRunning, FaShieldAlt, FaTrophy } from "react-icons/fa";
 import { FaChartBar } from "react-icons/fa";
 import { FaFutbol } from "react-icons/fa";
 import { Bar } from "react-chartjs-2";
+import { MdOutlineStadium } from "react-icons/md";
+
 import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from "chart.js";
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
@@ -127,10 +129,24 @@ interface WinnerPrediction {
     };
   }>;
 }
+
+interface Venue {
+  id: number;
+  name: string;
+  address: string;
+  city: string;
+  country: string;
+  capacity: number;
+  surface: string;
+  image: string;
+}
+
 import * as TeamsStatistics from "../services/getTeamsStatistics";
 import * as StandingsService from "../services/getStanding";
 import * as TeamsSeasons from "../services/getTeamsSeasons";
 import * as WinnerPredictionService from '../services/getMatchPredictionWinner';
+import * as VenueService from '../services/getVenue';
+import { UserContext } from "@/context/UserContext";
 
 export const TeamDetailsPage = () => {
   const location = useLocation();
@@ -143,7 +159,10 @@ export const TeamDetailsPage = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [winnerPrediction, setWinnerPrediction] = useState<WinnerPrediction | null>(null);
-  const [showWinnerPrediction, setShowWinnerPrediction] = useState<boolean>(false);
+  const [showWinnerPrediction, setShowWinnerPrediction] = useState<boolean>(true);
+  const [venue, setVenue] = useState<Venue | null>(null);
+  const userContext = useContext(UserContext);
+  const navigate = useNavigate();
 
   if (!team) {
     return <p className="dark:text-slate-300">No data available.</p>;
@@ -154,9 +173,9 @@ export const TeamDetailsPage = () => {
     name,
     logo,
     fixtureId,
+    venueId,
     league: { id: leagueId, name: leagueName, country: leagueCountry, season, round },
   } = team;
-
 
   useEffect(() => {
     setLoading(true);
@@ -192,13 +211,26 @@ export const TeamDetailsPage = () => {
 
     WinnerPredictionService.getLiveGames(fixtureId)
       .then((data) => {
-        // console.log(data);
+        // console.log('Venue', data);
         setWinnerPrediction(data[0] ?? null)
       })
       .catch((err) => {
         console.error(err);
       });
-  }, [season, id, leagueId]);
+
+    VenueService.getSquadStatistics(venueId)
+      .then((data) => {
+        setVenue(data[0] ?? null);
+      })
+      .catch((err) => console.error("Error fetching venue data:", err));
+
+  }, [season, id, leagueId, venueId]);
+
+  useEffect(() => {
+    if (!userContext?.isUserLoggedIn()) {
+      navigate("/");
+    }
+  }, [userContext, navigate]);
 
   if (loading) {
     return <p className="dark:text-slate-300">Loading...</p>;
@@ -252,6 +284,7 @@ export const TeamDetailsPage = () => {
   return (
     <div className="p-6 bg-gray-100 dark:bg-gray-900 min-h-screen">
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
         <div className="col-span-1 md:col-span-2 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
           <div className="flex items-center">
             <img src={logo} alt={name} className="w-24 h-24 mr-4" />
@@ -271,6 +304,55 @@ export const TeamDetailsPage = () => {
           <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4">Form</h2>
           <div className="flex space-x-2">{renderForm(form)}</div>
         </div>
+
+        {venue ? (
+          <div className="col-span-1 md:col-span-3 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-300">
+            <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-6 flex items-center">
+              <MdOutlineStadium className="text-blue-500 w-6 h-6 mr-2" />
+              Current Match Venue
+            </h2>
+            <div className="flex flex-col md:flex-row items-center">
+              <img
+                src={venue.image}
+                alt={venue.name}
+                className="w-48 h-48 rounded-lg shadow-md mb-4 md:mb-0 md:mr-6"
+              />
+              <div className="text-center md:text-left">
+                <p className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-2">
+                  {venue.name}
+                </p>
+                <p className="text-gray-600 dark:text-gray-400 mb-2">
+                  <span className="font-bold">City:</span> {venue.city}, {venue.country}
+                </p>
+                <p className="text-gray-600 dark:text-gray-400 mb-2">
+                  <span className="font-bold">Capacity:</span> {venue.capacity.toLocaleString()} seats
+                </p>
+                <p className="text-gray-600 dark:text-gray-400">
+                  <span className="font-bold">Surface:</span> {venue.surface}
+                </p>
+              </div>
+            </div>
+            <div className="mt-6">
+              <iframe
+                title="Venue Location"
+                src={`https://www.google.com/maps?q=${encodeURIComponent(
+                  venue.address
+                )}&output=embed`}
+                className="w-full h-64 rounded-lg shadow-md"
+                loading="lazy"
+              ></iframe>
+            </div>
+          </div>
+        ) : (
+          <div className="col-span-1 md:col-span-3 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 text-center">
+            <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4">
+              Current Match Venue
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400">
+              No match is currently being played at this venue.
+            </p>
+          </div>
+        )}
 
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
           <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4 flex items-center">
