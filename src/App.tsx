@@ -4,24 +4,30 @@ import { FaHome, FaChartBar } from "react-icons/fa";
 import { LiveGamesPage } from "./pages/LiveGamesPage";
 import { TeamInsightsPage } from "./pages/TeamInsightsPage";
 import { TeamDetailsPage } from "./pages/TeamDetailsPage";
+import { UserContext } from "./context/UserContext";
+import { useContext } from "react";
+import { LoginPage } from "./pages/LoginPage";
+import { RegisterPage } from "./pages/RegisterPage";
 
 const isPaidFeatureEnabled = true;
 
 const pages = [
-  { id: 1, title: "Live", url: "/", icon: <FaHome className="w-5 h-5" /> },
+  { id: 1, title: "Games", url: "/", icon: <FaHome className="w-5 h-5" /> },
   {
     id: 2,
     title: "Insights",
-    url: isPaidFeatureEnabled ? "/team-insights" : "/",
+    url: isPaidFeatureEnabled ? "/insights" : "/",
     icon: <FaChartBar className="w-5 h-5" />,
     isFree: isPaidFeatureEnabled,
   },
 ];
 
 function App() {
+  const userContext = useContext(UserContext);
+
   return (
     <>
-      <nav className="flex justify-center gap-6 p-4 bg-blue-600 dark:bg-gray-900 shadow-md">
+      <nav className="flex justify-between items-center p-4 bg-blue-600 dark:bg-gray-900 shadow-md">
         <div className="flex items-center space-x-6">
           {pages.map((page) => (
             <Link
@@ -31,13 +37,44 @@ function App() {
             >
               {page.icon}
               <span>{page.title}</span>
-              {/* {page.isFree && (
-                <span className="ml-2 px-2 py-1 text-xs font-bold text-blue-600 bg-white rounded-full">
-                  trial
-                </span>
-              )} */}
             </Link>
           ))}
+        </div>
+
+        <div className="flex items-center gap-4">
+          {userContext?.isUserLoggedIn() ? (
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
+                <img
+                  src={`https://ui-avatars.com/api/?name=${userContext.user}&background=random`}
+                  alt="User Avatar"
+                  className="w-8 h-8 rounded-full"
+                />
+                <span className="text-white font-medium">{`Welcome, ${userContext.user}`}</span>
+              </div>
+              <button
+                onClick={userContext.logout}
+                className="px-4 py-2 bg-red-500 text-white font-semibold rounded-lg hover:bg-red-600 transition"
+              >
+                Logout
+              </button>
+            </div>
+          ) : (
+            <>
+              <Link
+                to="/login"
+                className="px-4 py-2 bg-white text-blue-600 font-semibold rounded-lg hover:bg-gray-100 transition"
+              >
+                Login
+              </Link>
+              <Link
+                to="/register"
+                className="px-4 py-2 bg-white text-blue-600 font-semibold rounded-lg hover:bg-gray-100 transition"
+              >
+                Register
+              </Link>
+            </>
+          )}
         </div>
       </nav>
 
@@ -51,19 +88,22 @@ function App() {
               }
             />
             <Route
-              path="/team-insights"
+              path="/insights"
               element={
-                isPaidFeatureEnabled ? (
-                  <TeamInsightsPage />
+                userContext?.isUserLoggedIn() ? (
+                  isPaidFeatureEnabled ? (
+                    <TeamInsightsPage />
+                  ) : (
+                    <Navigate to="/" replace />
+                  )
                 ) : (
-                  <Navigate to="/" replace />
+                  <LoginPage />
                 )
               }
             />
-            <Route
-              path={`/team-insights/:teamId`}
-              element={<TeamDetailsPage />}
-            />
+            <Route path="/insights/:teamId" element={<TeamDetailsPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/login" element={<LoginPage />} />
           </Routes>
         </div>
       </div>

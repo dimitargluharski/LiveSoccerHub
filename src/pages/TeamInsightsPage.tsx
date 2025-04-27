@@ -122,7 +122,7 @@ export const TeamInsightsPage = () => {
               </div>
 
               <div className="bg-gray-50 dark:bg-gray-700 p-4 flex justify-center">
-                <Link to={`/team-insights/${team.id}`} state={{ team }} className="px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg shadow-md hover:bg-blue-700 transition">
+                <Link to={`/insights/${team.id}`} state={{ team }} className="px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg shadow-md hover:bg-blue-700 transition">
                   View Details
                 </Link>
               </div>
