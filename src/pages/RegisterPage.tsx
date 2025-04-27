@@ -24,13 +24,13 @@ export const RegisterPage = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-blue-500 to-purple-600">
+    <div className="flex items-center justify-center min-h-screen">
       <form
         onSubmit={handleSubmit}
         className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md"
       >
         <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
-          Login
+          Register
         </h2>
 
         {error && (
