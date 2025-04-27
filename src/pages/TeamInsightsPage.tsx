@@ -34,6 +34,7 @@ export const TeamInsightsPage = () => {
             name: game.teams.home.name,
             logo: game.teams.home.logo,
             fixtureId: game.fixture.id,
+            venueId: game.fixture.venue.id,
             league: {
               id: game.league.id,
               name: game.league.name,
@@ -49,6 +50,7 @@ export const TeamInsightsPage = () => {
             name: game.teams.away.name,
             logo: game.teams.away.logo,
             fixtureId: game.fixture.id,
+            venueId: game.fixture.venue.id,
             league: {
               id: game.league.id,
               name: game.league.name,

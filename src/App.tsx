@@ -1,11 +1,12 @@
 import { Routes, Route, Link, Navigate } from "react-router-dom";
 import { FaHome, FaChartBar } from "react-icons/fa";
+import { FaLock } from "react-icons/fa";
+import { useContext } from "react";
 
 import { LiveGamesPage } from "./pages/LiveGamesPage";
 import { TeamInsightsPage } from "./pages/TeamInsightsPage";
 import { TeamDetailsPage } from "./pages/TeamDetailsPage";
 import { UserContext } from "./context/UserContext";
-import { useContext } from "react";
 import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
 
@@ -37,6 +38,9 @@ function App() {
             >
               {page.icon}
               <span>{page.title}</span>
+              {page.title === "Insights" && (!userContext?.isUserLoggedIn() || !page.isFree) && (
+                <FaLock className="text-yellow-400 w-4 h-4" title="Requires login or payment" />
+              )}
             </Link>
           ))}
         </div>
